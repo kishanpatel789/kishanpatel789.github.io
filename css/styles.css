@@ -6,6 +6,12 @@ body {
   padding: 0;
 }
 
+h1 {
+  font-size: 30px;
+  margin: 0;
+  text-align: center;
+}
+
 .container {
   position: relative;
   height: 100%;
@@ -14,12 +20,17 @@ body {
 .list-container {
   width: 340px;
   height: 100%;
+  text-align: left;
+  background: #fff;
+  border: 1px solid #555;
+  border-radius: 5px;
+  padding: 10px;
 }
 
 #map {
   bottom: 0px;
   height: 100%;
-  left: 350px;
+  left: 362px;
   right: 0px;
   position: absolute;
 }
