@@ -12,7 +12,7 @@ var radius = 500; // meters
 
 function initMap() {
   map = new google.maps.Map(document.getElementById('map'), {
-    center: coordsAtlanta,  // Atlanta center
+    center: coordsAtlanta,  // downtown Atlanta center
     zoom: 20
   });
 
@@ -69,6 +69,8 @@ function initMap() {
         this.setIcon(defaultIcon);
       });
 
+      // add eventlistener for mouseclick
+
     });
   }
 } // end of initMap
@@ -104,7 +106,52 @@ function makeMarkerIcon(markerColor) {
   return markerImage;
 }
 
+// Establishment class constructor for list view
+var Establishment = function(data) {
+  this.name = ko.observable(data.name);
+  this.types = ko.observableArray(data.types);
+  this.display = ko.observable(true);
+}
+
+
 var ViewModel = function () {
   var self = this;
-  self.establishments = establishments;
+  self.establishments = ko.observableArray([]);
+  establishments.forEach(function(establishmentItem) {
+    self.establishments.push(new Establishment(establishmentItem));
+  });
+
+  self.establishmentCategories = ko.observableArray(['Restaurants','Hotels','Parks','Museums']);
+  self.selectedEstablishmentCategory = ko.observable();
+  self.filterEstablishments = function() {
+    var establishmentGoogleType;
+    switch (self.selectedEstablishmentCategory()) {
+      case 'Restaurants':
+        establishmentGoogleType = 'restaurant';
+        break;
+      case 'Hotels':
+        establishmentGoogleType = 'lodging';
+        break;
+      case 'Parks':
+        establishmentGoogleType = 'park';
+        break;
+      case 'Museums':
+        establishmentGoogleType = 'museum';
+        break;
+      default:
+        console.log('Error in filtering list.')
+    }
+    self.establishments().forEach(function(establishment) {
+      if (establishment.types.indexOf(establishmentGoogleType) <= -1) {
+        establishment.display(false);
+      } else {
+        establishment.display(true);
+      }
+    });
+  };
+
+  self.currentEstablishment = ko.observable();
+  self.changeCurrentEstablishment = function(establishment) {
+    self.currentEstablishment(establishment);
+  };
 }
