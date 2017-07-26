@@ -12,7 +12,7 @@
         <select data-bind="options: establishmentCategories, value: selectedEstablishmentCategory"></select>
         <input type="button" value="Go" data-bind="click: filterEstablishments">
         <ul data-bind="foreach: establishments">
-          <li class="listing" data-bind="text: name, visible: display, click: $root.changeCurrentEstablishment"></li>
+          <li class="listing" data-bind="text: name, visible: listDisplay, click: $root.changeCurrentEstablishment"></li>
 
         </ul>
       </div>
@@ -22,6 +22,7 @@
     <script src="js/lib/knockout-3.4.2.js"></script>
     <!-- <script src="js/lib/jquery-3.2.1.min.js"></script> -->
     <script src="js/app.js"></script>
+    <script src="js/viewmodel.js"></script>
     <script async defer
         src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyD-BPy1rWRc5m9IK2rgQBMU8U8xRvqc3tk&v=3&callback=initMap">
     </script>
