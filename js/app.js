@@ -57,7 +57,8 @@ function initMap() {
         position: establishment.geometry.location,
         map: map,
         title: establishment.name,
-        icon: defaultIcon
+        icon: defaultIcon,
+        animation: google.maps.Animation.DROP
       });
       markers.push(marker);
 
@@ -121,7 +122,7 @@ var ViewModel = function () {
     self.establishments.push(new Establishment(establishmentItem));
   });
 
-  self.establishmentCategories = ko.observableArray(['Restaurants','Hotels','Parks','Museums']);
+  self.establishmentCategories = ko.observableArray(['Restaurants','Hotels','Parks','Museums','Show All']);
   self.selectedEstablishmentCategory = ko.observable();
   self.filterEstablishments = function() {
     var establishmentGoogleType;
@@ -138,14 +139,21 @@ var ViewModel = function () {
       case 'Museums':
         establishmentGoogleType = 'museum';
         break;
+      case 'Show All':
+        establishmentGoogleType = 'everything';
+        break;
       default:
         console.log('Error in filtering list.')
     }
     self.establishments().forEach(function(establishment) {
-      if (establishment.types.indexOf(establishmentGoogleType) <= -1) {
-        establishment.display(false);
-      } else {
+      if (establishmentGoogleType == 'everything') {
         establishment.display(true);
+      } else {
+        if (establishment.types.indexOf(establishmentGoogleType) <= -1) {
+          establishment.display(false);
+        } else {
+          establishment.display(true);
+        }
       }
     });
   };
