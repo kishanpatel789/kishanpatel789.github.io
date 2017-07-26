@@ -46,16 +46,29 @@ function initMap() {
     });
   });
 
+  // set default style of marker and highlighted style for mouseover
+  var defaultIcon = makeMarkerIcon('0091ff');
+  var highlightedIcon = makeMarkerIcon('FFFF24');
+
   // this function makes markers for each object in the establishments array
   function makeMarkers() {
     establishments.forEach(function(establishment) {
       var marker = new google.maps.Marker({
         position: establishment.geometry.location,
         map: map,
-        title: establishment.name
+        title: establishment.name,
+        icon: defaultIcon
       });
       markers.push(marker);
-      // add event listener
+
+      // add event-listeners for marker mouseover and mouse out
+      marker.addListener('mouseover', function() {
+        this.setIcon(highlightedIcon);
+      });
+      marker.addListener('mouseout', function() {
+        this.setIcon(defaultIcon);
+      });
+
     });
   }
 } // end of initMap
@@ -78,6 +91,18 @@ function hideAllMarkers() {
   });
 } // end of hideAllMarkers
 
+// Create marker icon based on color
+function makeMarkerIcon(markerColor) {
+  var markerImage = {
+    url: 'http://chart.googleapis.com/chart?chst=d_map_spin&chld=1.15|0|'+ markerColor +
+    '|40|_',
+    size: new google.maps.Size(20, 30),
+    origin: new google.maps.Point(0, 0),
+    anchor: new google.maps.Point(10, 30),
+    scaledSize: new google.maps.Size(20, 30)
+  };
+  return markerImage;
+}
 
 var ViewModel = function () {
   var self = this;
