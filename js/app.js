@@ -1,110 +1,85 @@
 // declare global variables
 
-// data object; this object will contain search results from Google's PlacesService API
-var establishments = {
-  restaurants: [],
-  hotels: [],
-  parks: [],
-  museums: []
-}
+// data array; this array will contain search results from Google's PlacesService API
+var establishments = [];
 
-// this object will store all markers based on their establishment type
-var markers = {
-  restaurants: [],
-  hotels: [],
-  parks: [],
-  museums: []
-};
+// this array will store all markers based on their establishment type
+var markers = [];
 
 var map;
-var coordsAtlanta = {lat: 33.7489954, lng: -84.3879824};
+var coordsAtlanta = {lat: 33.755711, lng: -84.38837169999999};
 var radius = 500; // meters
 
 function initMap() {
   map = new google.maps.Map(document.getElementById('map'), {
     center: coordsAtlanta,  // Atlanta center
-    zoom: 13
+    zoom: 20
   });
 
   // gather data on downtown Atlanta establishments and store results in
-  // `establishments` object
+  // `establishments` array
   var placesService = new google.maps.places.PlacesService(map);
-  // get restaurants
-  placesService.nearbySearch({
-    location: coordsAtlanta,
-    radius: radius,
-    type: 'restaurant'
-  }, function(results, status) {
-    if (status === google.maps.places.PlacesServiceStatus.OK) {
-      establishments.restaurants = results;
-    }
-  });
-  // get hotels
-  placesService.nearbySearch({
-    location: coordsAtlanta,
-    radius: radius,
-    type: 'lodging'
-  }, function(results, status) {
-    if (status === google.maps.places.PlacesServiceStatus.OK) {
-      establishments.hotels = results;
-    }
-  });
-  // get parks
-  placesService.nearbySearch({
-    location: coordsAtlanta,
-    radius: radius,
-    type: 'park'
-  }, function(results, status) {
-    if (status === google.maps.places.PlacesServiceStatus.OK) {
-      establishments.parks = results;
-    }
-  });
-  // get museums
-  placesService.nearbySearch({
-    location: coordsAtlanta,
-    radius: radius,
-    type: 'museum'
-  }, function(results, status) {
-    if (status === google.maps.places.PlacesServiceStatus.OK) {
-      establishments.museums = results;
-    }
-  });
+  var numAJAXreturned = 0; // used to count AJAX completions to make markers at proper time
+  var establishmentTypes = ['restaurant','lodging','park','museum']; // type parameter for Google search
+  // loop through establishment types and call a `nearbySearch` for each type;
+  // push results to establishments array
+  establishmentTypes.forEach(function(establishmentType, i) {
+    var request = {
+      location: coordsAtlanta,
+      radius: radius,
+      type: establishmentType
+    };
+    placesService.nearbySearch(request, function(results, status) {
+      if (status === google.maps.places.PlacesServiceStatus.OK) {
+        numAJAXreturned++;
+        Array.prototype.push.apply(establishments, results);
+      } else {
+        console.log('Google PlacesService failed.');
+      }
+      if (numAJAXreturned === establishmentTypes.length) {
+        console.log('All AJAX requests completed.');
+        makeMarkers();    // make markers once last AJAX request is complete
+        extendBoundaries();  // extend map boundaries to view all markers
+        ko.applyBindings(new ViewModel()); // execute view model bindings
 
-  // create markers
-  $.each(establishments, function(type, establishmentArray) {
-    establishmentArray.forEach(function(establishment) {
-      var marker = new google.maps.Marker({
-        title: establishment.name,
-        position: establishment.geometry.location,
-        map: map
-      });
-      console.log(establishments);
-      markers.type.push(marker);
+      }
     });
   });
 
-console.log('hello');
-  // for (var type in establishments) {
-  //   establishments[type].forEach(function(establishment) {
-  //     console.log(establishment);
-      // var marker = new google.maps.Marker({
-      //   title: establishment.name,
-      //   position: establishment.geometry.location,
-      //   map: map
-      // });
-      // markers[type].push(marker);
-  //   });
-  // }
-  //
-
-
+  // this function makes markers for each object in the establishments array
+  function makeMarkers() {
+    establishments.forEach(function(establishment) {
+      var marker = new google.maps.Marker({
+        position: establishment.geometry.location,
+        map: map,
+        title: establishment.name
+      });
+      markers.push(marker);
+      // add event listener
+    });
+  }
 } // end of initMap
+
+
+// this function extends the map boundaries so all markers are visible
+function extendBoundaries() {
+  var bounds = new google.maps.LatLngBounds();
+  markers.forEach(function(marker) {
+    bounds.extend(marker.position);
+  });
+  // Extend the boundaries of the map for each marker
+  map.fitBounds(bounds);
+}
 
 // this function hides all markers from the map
 function hideAllMarkers() {
-  for (var type in markers) {
-    markers.type.forEach(function(marker) {
-      marker.setMap(null);
-    });
-  }
+  markers.forEach(function(marker,i) {
+    marker.setMap(null);
+  });
 } // end of hideAllMarkers
+
+
+var ViewModel = function () {
+  var self = this;
+  self.establishments = establishments;
+}
