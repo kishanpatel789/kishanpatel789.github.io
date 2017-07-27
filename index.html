@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Explore Downtown Atlanta</title>
   <link rel="stylesheet" type="text/css" href="css/styles.css">
 
 </head>
@@ -12,7 +15,7 @@
         <select data-bind="options: establishmentCategories, value: selectedEstablishmentCategory"></select>
         <input type="button" value="Go" data-bind="click: filterEstablishments">
         <ul data-bind="foreach: establishments">
-          <li class="listing" data-bind="text: name, visible: listDisplay, click: $root.changeCurrentEstablishment"></li>
+          <li class="list-item" data-bind="text: name, visible: listDisplay, click: $root.changeCurrentEstablishment"></li>
 
         </ul>
       </div>

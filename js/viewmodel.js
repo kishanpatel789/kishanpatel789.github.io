@@ -56,6 +56,7 @@ var ViewModel = function () {
         }
       }
     });
+    extendBoundaries();
   };
 
 

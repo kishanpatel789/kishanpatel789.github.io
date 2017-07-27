@@ -5,9 +5,9 @@ var establishmentsData = [];
 
 var map;
 var coordsAtlanta = {lat: 33.755711, lng: -84.38837169999999};
-var radius = 500; // meters
+var radius = 1000; // meters
 var defaultIcon, highlightedIcon, largeInfoWindow;
-var currentMarker;
+var currentMarker; // used to indicate the marker corresponding to the selected establishment
 
 function initMap() {
   map = new google.maps.Map(document.getElementById('map'), {
@@ -47,8 +47,8 @@ function initMap() {
   largeInfoWindow = new google.maps.InfoWindow();
 
   // set default style of marker and highlighted style for mouseover
-  defaultIcon = makeMarkerIcon('0091ff');
-  highlightedIcon = makeMarkerIcon('FFFF24');
+  defaultIcon = makeMarkerIcon('1097ff');
+  highlightedIcon = makeMarkerIcon('004f8c');
 
   // Create marker icon based on color
   function makeMarkerIcon(markerColor) {
