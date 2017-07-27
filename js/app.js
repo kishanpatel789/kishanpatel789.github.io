@@ -6,7 +6,8 @@ var establishmentsData = [];
 var map;
 var coordsAtlanta = {lat: 33.755711, lng: -84.38837169999999};
 var radius = 500; // meters
-var defaultIcon, highlightedIcon;
+var defaultIcon, highlightedIcon, largeInfoWindow;
+var currentMarker;
 
 function initMap() {
   map = new google.maps.Map(document.getElementById('map'), {
@@ -41,6 +42,9 @@ function initMap() {
       }
     });
   });
+
+  // define info window
+  largeInfoWindow = new google.maps.InfoWindow();
 
   // set default style of marker and highlighted style for mouseover
   defaultIcon = makeMarkerIcon('0091ff');
@@ -81,8 +85,36 @@ function makeMarker(data) {
   });
 
   // add eventlistener for mouseclick
+  marker.addListener('click', function() {
+    changeCurrentMarker(this);
+  });
 
   return marker;
+}
+
+// this marker updates the current marker
+function changeCurrentMarker(marker) {
+  if (currentMarker) {
+    currentMarker.setAnimation(null); // make prior selected marker stop bouncing
+  }
+  currentMarker = marker;
+  currentMarker.setAnimation(google.maps.Animation.BOUNCE);
+  populateInfoWindow(currentMarker, largeInfoWindow);
+}
+
+// this window sets the contenet and position of the info window
+function populateInfoWindow(marker, infowindow) {
+  // Check to make sure info window is not already open at this marker
+  if (infowindow.marker != marker) {
+    infowindow.marker = marker;
+    infowindow.setContent('<div>' + marker.title + '</div>');
+    infowindow.open(map, marker);
+    // Make sure currentMarker is cleared if the infowindow is closed.
+    infowindow.addListener('closeclick', function() {
+      infowindow.marker = null;
+      currentMarker.setAnimation(null);
+    })
+  }
 }
 
 // this function extends the map boundaries so all markers are visible

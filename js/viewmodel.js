@@ -17,6 +17,8 @@ var ViewModel = function () {
     self.establishments.push(new Establishment(establishmentItem));
   });
 
+
+  // this section filters the list and markers to only show what the user selects
   self.establishmentCategories = ko.observableArray(['Restaurants','Hotels','Parks','Museums','Show All']);
   self.selectedEstablishmentCategory = ko.observable();
   self.filterEstablishments = function() {
@@ -56,8 +58,10 @@ var ViewModel = function () {
     });
   };
 
-  self.currentEstablishment = ko.observable();
+
   self.changeCurrentEstablishment = function(establishment) {
-    self.currentEstablishment(establishment);
+    changeCurrentMarker(establishment.marker);  // send establishment's marker to changeCurrentMarker function in app.js
   };
-}
+
+
+} // end of ViewModel
