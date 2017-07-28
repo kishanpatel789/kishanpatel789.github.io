@@ -9,7 +9,7 @@
 </head>
   <body>
     <div class="container">
-      <div class="list-container">
+      <section id="list-container">
         <h1>Let's Explore Downtown Atlanta!</h1><br>
         <span class="text">Filter by </span>
         <select data-bind="options: establishmentCategories, value: selectedEstablishmentCategory"></select>
@@ -18,12 +18,21 @@
           <li class="list-item" data-bind="text: name, visible: listDisplay, click: $root.changeCurrentEstablishment"></li>
 
         </ul>
+      </section>
+      <div id="map">
+
       </div>
-      <div id="map"></div>
+      <div id="hamburger">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M2 6h20v3H2zm0 5h20v3H2zm0 5h20v3H2z"></path>
+
+        </svg>
+      </div>
+
     </div>
 
     <script src="js/lib/knockout-3.4.2.js"></script>
-    <!-- <script src="js/lib/jquery-3.2.1.min.js"></script> -->
+    <script src="js/lib/jquery-3.2.1.min.js"></script>
     <script src="js/app.js"></script>
     <script src="js/viewmodel.js"></script>
     <script async defer

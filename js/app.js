@@ -8,6 +8,9 @@ var coordsAtlanta = {lat: 33.755711, lng: -84.38837169999999};
 var radius = 1000; // meters
 var defaultIcon, highlightedIcon, largeInfoWindow;
 var currentMarker; // used to indicate the marker corresponding to the selected establishment
+var hamburgerIcon = $('#hamburger');
+var listContainer = $('#list-container');
+var mapContainer = $('#map');
 
 function initMap() {
   map = new google.maps.Map(document.getElementById('map'), {
@@ -63,6 +66,20 @@ function initMap() {
     return markerImage;
   }
 
+  // add event listener to hamburger icon for mobile view
+  hamburgerIcon.click(function(e) {
+    listContainer.toggleClass('list-container-open');
+    hamburgerIcon.css('display','none');
+    e.stopPropagation();
+  });
+
+  // add event listener to map to close list-container in mobile view
+  mapContainer.click(function() {
+    if (window.innerWidth < 600){
+      listContainer.removeClass('list-container-open');
+        hamburgerIcon.css('display','inline'); 
+    }
+  });
 } // end of initMap
 
 
