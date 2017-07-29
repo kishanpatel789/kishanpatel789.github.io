@@ -17,14 +17,15 @@
         <ul data-bind="foreach: establishments">
           <li class="list-item" data-bind="text: name, visible: listDisplay, click: $root.changeCurrentEstablishment"></li>
         </ul>
+        <br>
+        <span class="attribution">Data provided by Foursquare</span>
       </section>
-      <div id="map">
+      <div id="map-container">
 
       </div>
       <div id="hamburger">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
           <path d="M2 6h20v3H2zm0 5h20v3H2zm0 5h20v3H2z"></path>
-
         </svg>
       </div>
 

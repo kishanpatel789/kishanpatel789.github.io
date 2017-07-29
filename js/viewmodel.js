@@ -1,8 +1,7 @@
 // Establishment class constructor for list view
 var Establishment = function(data) {
   this.name = ko.observable(data.name);
-  this.location = ko.observable(data.geometry.location);
-  this.types = ko.observableArray(data.types);
+  this.type = ko.observable(data.type);
   this.listDisplay = ko.observable(true);
   this.marker = makeMarker(data);
 }
@@ -17,48 +16,26 @@ var ViewModel = function () {
     self.establishments.push(new Establishment(establishmentItem));
   });
 
-
   // this section filters the list and markers to only show what the user selects
-  self.establishmentCategories = ko.observableArray(['Restaurants','Hotels','Parks','Museums','Show All']);
+  self.establishmentCategories = ko.observableArray(['Restaurant','Hotel','Park','Museum','Show All']);
   self.selectedEstablishmentCategory = ko.observable();
   self.filterEstablishments = function() {
-    var establishmentGoogleType;
-    switch (self.selectedEstablishmentCategory()) {
-      case 'Restaurants':
-        establishmentGoogleType = 'restaurant';
-        break;
-      case 'Hotels':
-        establishmentGoogleType = 'lodging';
-        break;
-      case 'Parks':
-        establishmentGoogleType = 'park';
-        break;
-      case 'Museums':
-        establishmentGoogleType = 'museum';
-        break;
-      case 'Show All':
-        establishmentGoogleType = 'everything';
-        break;
-      default:
-        console.log('Error in filtering list.')
-    }
     self.establishments().forEach(function(establishment) {
-      if (establishmentGoogleType == 'everything') {
+      if (self.selectedEstablishmentCategory() == 'Show All') {
         establishment.listDisplay(true);
         establishment.marker.setMap(map);
       } else {
-        if (establishment.types.indexOf(establishmentGoogleType) == -1) { // determines if establishment types contains selectedEstablishmentCategory
-          establishment.listDisplay(false);
-          establishment.marker.setMap(null);
-        } else {
+        if (establishment.type() == self.selectedEstablishmentCategory()) { // determines if establishment types contains selectedEstablishmentCategory
           establishment.listDisplay(true);
           establishment.marker.setMap(map);
+        } else {
+          establishment.listDisplay(false);
+          establishment.marker.setMap(null);
         }
       }
     });
     extendBoundaries();
   };
-
 
   self.changeCurrentEstablishment = function(establishment) {
     changeCurrentMarker(establishment.marker);  // send establishment's marker to changeCurrentMarker function in app.js
@@ -67,6 +44,4 @@ var ViewModel = function () {
       hamburgerIcon.css('display','inline');
     }
   };
-
-
 } // end of ViewModel
