@@ -1,18 +1,21 @@
-// declare global variables
+// Declare global variables
 var map;
 var coords = {lat: 33.755711, lng: -84.38837169999999}; // location of downtown Atlanta
-var radius = 500; // meters
-var defaultIcon, highlightedIcon, largeInfoWindow;
+var defaultIcon, highlightedIcon, largeInfoWindow; // variables used with Google Maps API
 var currentMarker; // used to indicate the marker corresponding to the selected establishment
 var hamburgerIcon = $('#hamburger');
 var listContainer = $('#list-container');
 var mapContainer = $('#map-container');
 
+// Variables used with Foursquare API
 var fsClientId = 'L0DLOIYIUCZ3HGOBYKCP40HNGPCMYW13OUYYG3LQ13U5DO1Q';
 var fsClientSecret = 'PF2HO5Z2ACWPKAQUYUNDLZSZHN43EXD0RYXJ1AWGST5UHIW3';
 var foursquareUrlBase = 'https://api.foursquare.com/v2/venues/search?client_id=' +
   fsClientId +'&client_secret=' + fsClientSecret +'&v=20170729&intent=match&query=';
 
+// Hard-coded data from 20-locations in downtown Atlanta;
+// These establishments will appear on the map and will be able to be filtered by
+// establishment type.
 var establishmentsData = [
   {
     name: "Alma Cocina",
@@ -156,6 +159,8 @@ var establishmentsData = [
   }
 ];
 
+// This initialization function is run when the AJAX request to Google Maps API returns.
+// The end of the function applies knockout.js bindings for the View-Model
 function initMap() {
   map = new google.maps.Map(document.getElementById('map-container'), {
     center: coords,  // downtown Atlanta center
@@ -199,11 +204,10 @@ function initMap() {
 
   ko.applyBindings(new ViewModel()); // execute view model bindings (Knockout)
   extendBoundaries();  // extend map boundaries to view all markers
-
 } // end of initMap
 
 
-// this function makes a marker for each establishment
+// This function makes a marker for each establishment.
 function makeMarker(establishment) {
   var marker = new google.maps.Marker({
     position: {lat: establishment.lat, lng: establishment.lng},
@@ -213,7 +217,7 @@ function makeMarker(establishment) {
     animation: google.maps.Animation.DROP
   });
 
-  // add event-listeners for marker mouseover and mouse out
+  // Add event-listeners for marker mouseover and mouseout
   marker.addListener('mouseover', function() {
     this.setIcon(highlightedIcon);
   });
@@ -221,7 +225,7 @@ function makeMarker(establishment) {
     this.setIcon(defaultIcon);
   });
 
-  // add eventlistener for mouseclick
+  // Add eventlistener for mouseclick
   marker.addListener('click', function() {
     changeCurrentMarker(this);
   });
@@ -233,20 +237,19 @@ function makeMarker(establishment) {
   $.getJSON(foursquareUrl)
     .done(function(results) {
       var data = results.response.venues[0];
-      (data.location.address) ? marker.address = data.location.address : marker.address = 'None available';
-      (data.contact.formattedPhone) ? marker.phone = data.contact.formattedPhone : marker.phone = 'None available';
-      (data.contact.twitter) ? marker.twitter = '@'+data.contact.twitter : marker.twitter = 'None available';
+      marker.address = (data.location.address) ? data.location.address : 'None available';
+      marker.phone = (data.contact.formattedPhone) ? data.contact.formattedPhone : 'None available';
+      marker.twitter = (data.contact.twitter) ? '@'+data.contact.twitter : 'None available';
     })
     .fail(function(results, error, message) {
       console.log('Failed to access Foursquare due to ' + message + '.');
-    }
-
-    );
+    });
 
   return marker;
 }
 
-// this marker updates the current marker
+// This marker updates the current marker by adjusting marker animation and
+// populating the info window on the map.
 function changeCurrentMarker(marker) {
   if (currentMarker) {
     currentMarker.setAnimation(null); // make prior selected marker stop bouncing
@@ -256,7 +259,7 @@ function changeCurrentMarker(marker) {
   populateInfoWindow(currentMarker, largeInfoWindow);
 }
 
-// this window sets the contenet and position of the info window
+// This function sets the content and position of the info window.
 function populateInfoWindow(marker, infowindow) {
   // Check to make sure info window is not already open at this marker
   if (infowindow.marker != marker) {
@@ -269,12 +272,12 @@ function populateInfoWindow(marker, infowindow) {
     // Make sure currentMarker is cleared if the infowindow is closed.
     infowindow.addListener('closeclick', function() {
       infowindow.marker = null;
-      currentMarker.setAnimation(null);
-    })
+      currentMarker.setAnimation(null); // disable marker bounce upon close of infowindow
+    });
   }
 }
 
-// this function extends the map boundaries so all markers are visible
+// This function extends the map boundaries so all markers are within the boundaries.
 function extendBoundaries() {
   var bounds = new google.maps.LatLngBounds();
   establishmentsData.forEach(function(establishment) {
