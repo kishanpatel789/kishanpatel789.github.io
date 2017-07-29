@@ -5,3 +5,21 @@ Palletton ID
 http://paletton.com/palette.php?uid=13m0u0kw0w0jyC%2BoRxVy4oIDfjr
 
 http://paletton.com/palette.php?uid=13x0u0kwi%2B%2Bbu%2B%2BhX%2B%2B%2B%2Brd%2B%2BkX
+
+
+Yelp Client ID
+dqnQeiw6cKwoYZ_Q_Fb22w
+
+Yelp Client Secret
+U3FVIRqBWZfsE3dGCOIgN3pXaU4htwm3sogPBAkSgicdozcX3WfTXow3nuszCd17
+
+{"access_token":
+"R-17AQVBJ0s4X2f_SOMj5od50zIRaUpgqLxwjdd36gmlJQf9Oa283E4HfJnKoZR1gN362KLkfWVnjTf1z-bG-piBr5QAE5218Et_-DQY3UFB0RbHdq461u0wJI57WXYx",
+"expires_in": 15551999, "token_type": "Bearer"}
+
+
+FourSquare CLIENT_ID
+L0DLOIYIUCZ3HGOBYKCP40HNGPCMYW13OUYYG3LQ13U5DO1Q
+
+FourSquare CLIENT_SECRET
+PF2HO5Z2ACWPKAQUYUNDLZSZHN43EXD0RYXJ1AWGST5UHIW3

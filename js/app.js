@@ -4,8 +4,8 @@
 var establishmentsData = [];
 
 var map;
-var coordsAtlanta = {lat: 33.755711, lng: -84.38837169999999};
-var radius = 1000; // meters
+var coords = {lat: 33.755711, lng: -84.38837169999999}; // location of downtown Atlanta
+var radius = 500; // meters
 var defaultIcon, highlightedIcon, largeInfoWindow;
 var currentMarker; // used to indicate the marker corresponding to the selected establishment
 var hamburgerIcon = $('#hamburger');
@@ -14,7 +14,7 @@ var mapContainer = $('#map');
 
 function initMap() {
   map = new google.maps.Map(document.getElementById('map'), {
-    center: coordsAtlanta,  // downtown Atlanta center
+    center: coords,  // downtown Atlanta center
     zoom: 18
   });
 
@@ -27,7 +27,7 @@ function initMap() {
   // push results to establishments array
   establishmentTypes.forEach(function(establishmentType, i) {
     var request = {
-      location: coordsAtlanta,
+      location: coords,
       radius: radius,
       type: establishmentType
     };
@@ -75,9 +75,9 @@ function initMap() {
 
   // add event listener to map to close list-container in mobile view
   mapContainer.click(function() {
-    if (window.innerWidth < 600){
+    if (window.innerWidth < 600) {
       listContainer.removeClass('list-container-open');
-        hamburgerIcon.css('display','inline'); 
+      hamburgerIcon.css('display','inline');
     }
   });
 } // end of initMap

@@ -62,8 +62,10 @@ var ViewModel = function () {
 
   self.changeCurrentEstablishment = function(establishment) {
     changeCurrentMarker(establishment.marker);  // send establishment's marker to changeCurrentMarker function in app.js
-    listContainer.removeClass('list-container-open');
-    hamburgerIcon.css('display','inline');
+    if (window.innerWidth < 600){  // close list-container when in mobile view
+      listContainer.removeClass('list-container-open');
+      hamburgerIcon.css('display','inline');
+    }
   };
 
 

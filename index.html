@@ -16,7 +16,6 @@
         <input type="button" value="Go" data-bind="click: filterEstablishments">
         <ul data-bind="foreach: establishments">
           <li class="list-item" data-bind="text: name, visible: listDisplay, click: $root.changeCurrentEstablishment"></li>
-
         </ul>
       </section>
       <div id="map">
