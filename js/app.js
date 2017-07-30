@@ -1,7 +1,7 @@
 // Declare global variables
 var map;
 var coords = {lat: 33.755711, lng: -84.38837169999999}; // location of downtown Atlanta
-var defaultIcon, highlightedIcon, largeInfoWindow; // variables used with Google Maps API
+var bounds, defaultIcon, highlightedIcon, largeInfoWindow; // variables used with Google Maps API
 var currentMarker; // used to indicate the marker corresponding to the selected establishment
 var hamburgerIcon = $('#hamburger');
 var listContainer = $('#list-container');
@@ -20,6 +20,17 @@ function initMap() {
   map = new google.maps.Map(document.getElementById('map-container'), {
     center: coords,  // downtown Atlanta center
     zoom: 18
+  });
+
+  // define boundaries of map based on establishment locations
+  bounds = new google.maps.LatLngBounds();
+  establishmentsData.forEach(function(establishment) {
+    bounds.extend({lat: establishment.lat, lng: establishment.lng});
+  });
+
+  // recenter map if browser window changes size
+  google.maps.event.addDomListener(window, 'resize', function() {
+    map.fitBounds(bounds); // `bounds` is a `LatLngBounds` object
   });
 
   // define info window
@@ -41,21 +52,6 @@ function initMap() {
     };
     return markerImage;
   }
-
-  // add event listener to hamburger icon for mobile view
-  hamburgerIcon.click(function(e) {
-    listContainer.toggleClass('list-container-open');
-    hamburgerIcon.css('display','none');
-    e.stopPropagation();
-  });
-
-  // add event listener to map to close list-container in mobile view
-  mapContainer.click(function() {
-    if (window.innerWidth < 600) {
-      listContainer.removeClass('list-container-open');
-      hamburgerIcon.css('display','inline');
-    }
-  });
 
   ko.applyBindings(new ViewModel()); // execute view model bindings (Knockout)
   extendBoundaries();  // extend map boundaries to view all markers
@@ -96,8 +92,9 @@ function makeMarker(establishment) {
       marker.phone = (data.contact.formattedPhone) ? data.contact.formattedPhone : 'None available';
       marker.twitter = (data.contact.twitter) ? '@'+data.contact.twitter : 'None available';
     })
-    .fail(function(results, error, message) {
-      console.log('Failed to access Foursquare due to ' + message + '.');
+    .fail(function(jqXHR, textStatus, errorThrown) {
+      alert('Failed to access Foursquare due to ' + errorThrown + '.  ' +
+        jqXHR.responseJSON.meta.errorDetail);
     });
 
   return marker;
@@ -124,6 +121,8 @@ function populateInfoWindow(marker, infowindow) {
                           '<div><b>Phone: </b>' + marker.phone + '</div>' +
                           '<div><b>Twitter: </b>' + marker.twitter + '</div>');
     infowindow.open(map, marker);
+    map.panTo(marker.getPosition());
+
     // Make sure currentMarker is cleared if the infowindow is closed.
     infowindow.addListener('closeclick', function() {
       infowindow.marker = null;
@@ -134,10 +133,5 @@ function populateInfoWindow(marker, infowindow) {
 
 // This function extends the map boundaries so all markers are within the boundaries.
 function extendBoundaries() {
-  var bounds = new google.maps.LatLngBounds();
-  establishmentsData.forEach(function(establishment) {
-    bounds.extend({lat: establishment.lat, lng: establishment.lng});
-  });
-  // Extend the boundaries of the map for each marker
   map.fitBounds(bounds);
 }

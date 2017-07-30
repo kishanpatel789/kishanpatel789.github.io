@@ -52,10 +52,13 @@ var ViewModel = function () {
   };
 
   // This observable will determine if the list panel should be visible or not based
-  // on whether the hamburger icon has been clicked in mobile view.
+  // on whether the hamburger icon or map has been clicked in mobile view.
   self.panelOpen = ko.observable(false);
   self.hamburgerClick = function() {
     self.panelOpen(true);
   };
+  self.mapClick = function() {
+    self.panelOpen(false);
+  }
 
 }; // end of ViewModel

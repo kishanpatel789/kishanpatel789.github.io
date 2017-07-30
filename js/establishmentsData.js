@@ -9,7 +9,8 @@ var establishmentsData = [
     lng: -84.3873043,
     address: "191 Peachtree Street Northeast, Atlanta, GA",
     type: "Restaurant"
-  },
+  }
+  ,
   {
     name: "Morton's The Steakhouse",
     lat: 33.762719,
