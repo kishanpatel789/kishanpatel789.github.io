@@ -14,5 +14,6 @@ To locally host and view the website on browser:
 * This app contains two main parts:
   1. A list panel containing establishments.
   2. A Google map showcasing establishments with markers.
+* The hard-coded array of 20 establishments is defined in `establishmentsData.js`.
 * Most of the app's features are defined within `app.js`.
 * The list is populated and filtered by the Knockout framework in `viewmodel.js` based on establishment type.
