@@ -19,7 +19,7 @@ h1 {
   position: relative;
 }
 
-section {
+aside {
   box-sizing: border-box;
   width: 340px;
   height: 100%;
@@ -47,8 +47,6 @@ section {
 #map-container {
   width: 100%;
   height: 100%;
-  /*position: relative;*/
-  /*z-index: 0;*/
 }
 
 #hamburger {
@@ -58,6 +56,11 @@ section {
   top: 45px;
   width: 40px;
   fill: #003D6B;
+  display: inline;
+}
+
+.hide-hamburger {
+  display: none;
 }
 
 ul {
@@ -83,15 +86,15 @@ ul {
 }
 
 @media screen and (min-width: 600px) {
+  .container {
+    display: flex;
+    flex-flow: row nowrap;
+  }
+
   #list-container {
     position: relative;
     -webkit-transform: translate(0, 0);
     transform: translate (0,0);
-  }
-
-  .container {
-    display: flex;
-    flex-flow: row nowrap;
   }
 
   #map-container {

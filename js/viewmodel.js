@@ -50,4 +50,12 @@ var ViewModel = function () {
       hamburgerIcon.css('display','inline');
     }
   };
+
+  // This observable will determine if the list panel should be visible or not based
+  // on whether the hamburger icon has been clicked in mobile view.
+  self.panelOpen = ko.observable(false);
+  self.hamburgerClick = function() {
+    self.panelOpen(true);
+  };
+
 }; // end of ViewModel

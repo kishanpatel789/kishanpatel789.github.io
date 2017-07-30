@@ -9,7 +9,7 @@
 </head>
   <body>
     <div class="container">
-      <section id="list-container">
+      <aside id="list-container" data-bind="css: {'list-container-open' : panelOpen}">
         <h1>Let's Explore Downtown Atlanta!</h1><br>
         <span class="text">Filter by </span>
         <select data-bind="options: establishmentCategories, value: selectedEstablishmentCategory"></select>
@@ -19,9 +19,9 @@
         </ul>
         <br>
         <span class="attribution">Data provided by Foursquare</span>
-      </section>
-      <div id="map-container"></div>
-      <div id="hamburger">
+      </aside>
+      <main id="map-container"></main>
+      <div id="hamburger" data-bind="click: hamburgerClick, css: {'hide-hamburger': panelOpen}">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
           <path d="M2 6h20v3H2zm0 5h20v3H2zm0 5h20v3H2z"></path>
         </svg>
@@ -31,6 +31,7 @@
 
     <script src="js/lib/knockout-3.4.2.js"></script>
     <script src="js/lib/jquery-3.2.1.min.js"></script>
+    <script src="js/establishmentsData.js"></script>
     <script src="js/app.js"></script>
     <script src="js/viewmodel.js"></script>
     <script async defer
