@@ -18,24 +18,34 @@ var ViewModel = function () {
   });
 
   // This obsevable array contains the list's filter options.
-  self.establishmentCategories = ko.observableArray(['Restaurant','Hotel','Park','Museum','Show All']);
+  self.establishmentCategories = ko.observableArray(['Show All','Restaurant','Hotel','Park','Museum']);
 
   // This observable records the selected filter option.
   self.selectedEstablishmentCategory = ko.observable();
 
   // This function filters the list and markers to only show what the user selects
   self.filterEstablishments = function() {
+    // if needed, close current infowindow and stop bouncing marker
+    if (largeInfoWindow != null) {
+      largeInfoWindow.close();
+      currentMarker.setAnimation(null); 
+    }
+
+    // loop through establishments to determine if each one should be visible in list
     self.establishments().forEach(function(establishment) {
       if (self.selectedEstablishmentCategory() == 'Show All') {
         establishment.listDisplay(true);
-        establishment.marker.setMap(map);
+        // establishment.marker.setMap(map);
+        establishment.marker.setVisible(true);
       } else {
         if (establishment.type() == self.selectedEstablishmentCategory()) { // determines if establishment type matches selectedEstablishmentCategory
           establishment.listDisplay(true);
-          establishment.marker.setMap(map);
+          // establishment.marker.setMap(map);
+          establishment.marker.setVisible(true);
         } else {
           establishment.listDisplay(false);
-          establishment.marker.setMap(null);
+          // establishment.marker.setMap(null);
+          establishment.marker.setVisible(false);
         }
       }
     });

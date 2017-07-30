@@ -2,7 +2,7 @@ html,
 body {
   font-family: Arial, sans-serif;
   height: 100%;
-  width: 100%
+  width: 100%;
   margin: 0;
   padding: 0;
 }
@@ -34,13 +34,13 @@ aside {
 
   position: absolute;
   -webkit-transform: translate(-340px, 0);
-  transform: (-340px, 0);
+  transform: translateX(-340px) translateY(0);
   transition: transform 0.3s ease;
 }
 
 .list-container-open {
   -webkit-transform: translate(0, 0);
-  transform: (0, 0);
+  transform: translateX(0) translateY(0);
   z-index: 99;
 }
 
@@ -55,7 +55,7 @@ aside {
   left: 10px;
   top: 45px;
   width: 40px;
-  fill: #003D6B;
+  /*fill: #003D6B;*/
 }
 
 .hide-hamburger {
@@ -93,7 +93,7 @@ ul {
   #list-container {
     position: relative;
     -webkit-transform: translate(0, 0);
-    transform: translate (0,0);
+    transform: translateX(0) translateY(0);
   }
 
   #map-container {
