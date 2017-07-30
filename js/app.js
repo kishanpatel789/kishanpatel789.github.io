@@ -135,3 +135,8 @@ function populateInfoWindow(marker, infowindow) {
 function extendBoundaries() {
   map.fitBounds(bounds);
 }
+
+// This function executes if the Google Maps API fails to return
+function mapError() {
+  alert('Failed to access Google Maps API.')
+}

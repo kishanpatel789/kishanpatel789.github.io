@@ -28,7 +28,7 @@ var ViewModel = function () {
     // if needed, close current infowindow and stop bouncing marker
     if (largeInfoWindow != null) {
       largeInfoWindow.close();
-      currentMarker.setAnimation(null); 
+      currentMarker.setAnimation(null);
     }
 
     // loop through establishments to determine if each one should be visible in list
@@ -56,8 +56,7 @@ var ViewModel = function () {
   self.changeCurrentEstablishment = function(establishment) {
     changeCurrentMarker(establishment.marker);  // send establishment's marker to changeCurrentMarker function in app.js
     if (window.innerWidth < 600){  // close list-container when in mobile view
-      listContainer.removeClass('list-container-open');
-      hamburgerIcon.css('display','inline');
+      self.panelOpen(false);
     }
   };
 
