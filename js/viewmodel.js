@@ -68,6 +68,6 @@ var ViewModel = function () {
   };
   self.mapClick = function() {
     self.panelOpen(false);
-  }
+  };
 
 }; // end of ViewModel

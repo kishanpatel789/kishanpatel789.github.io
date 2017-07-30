@@ -138,5 +138,5 @@ function extendBoundaries() {
 
 // This function executes if the Google Maps API fails to return
 function mapError() {
-  alert('Failed to access Google Maps API.')
+  alert('Failed to access Google Maps API.');
 }
