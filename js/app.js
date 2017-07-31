@@ -93,8 +93,7 @@ function makeMarker(establishment) {
       marker.twitter = (data.contact.twitter) ? '@'+data.contact.twitter : 'None available';
     })
     .fail(function(jqXHR, textStatus, errorThrown) {
-      alert('Failed to access Foursquare due to ' + errorThrown + '.  ' +
-        jqXHR.responseJSON.meta.errorDetail);
+      alert('Failed to access Foursquare due to ' + errorThrown + '.');
     });
 
   return marker;
